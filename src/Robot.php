@@ -1,99 +1,86 @@
 <?php
 
-class Robot
+$directions = ["N", "E", "S", "W"];
+
+$robot =  array(
+	"xAxis" => 0,
+	"yAxis" => 0,
+	"direction" => "N"
+);
+
+	$terrain = array(
+	"width" => 5,
+	"height" => 5
+);
+
+	function getRobotPosition()
 {
-	private $teste = "teste";
+	global $robot;
 
-	private $directions = ["N", "E", "S", "W"];
+	return sprintf("X Axis: %d \n".
+					"Y Axis: %d \n".
+					"Direction: %s \n", 
+					$robot["xAxis"], $robot["yAxis"], 
+					$robot["direction"]);
+}
 
-	private $robot =  array(
-		"xAxis" => 0,
-		"yAxis" => 0,
-		"direction" => "N"
-	);
-
-	private $terrain = array(
-		"width" => 5,
-		"height" => 5
-	);
-
-	private function __construct($teste)
-    {
-        $this->teste = $teste;
-    }
-
-	public static function teste()
-	{
-		return $teste;
+function moveForward($anyAxis, $terrainSize)
+{
+	if($anyAxis < ($terrainSize - 1)){
+		$anyAxis++;
 	}
+}
 
-	public function getRobotPosition()
-	{
-		return sprintf("X Axis: %d \n".
-					   "Y Axis: %d \n".
-					   "Direction: %s \n", 
-						$this->robot["xAxis"], $this->robot["yAxis"], 
-						$this->robot["direction"]);
+function moveBackward($anyAxis)
+{
+	if($anyAxis > 0){
+		$anyAxis--;
 	}
+}
 
-	function moveForward($anyAxis, $terrainSize)
+function robotStep($position)
+{
+	if($position == "N")
 	{
-		if($anyAxis < ($terrainSize - 1)){
-			$anyAxis++;
-		}
+		moveForward($robot["xAxis"], $terrain["height"]);
 	}
-
-	function moveBackward($anyAxis)
+	if($position == "E")
 	{
-		if($anyAxis > 0){
-			$anyAxis--;
-		}
+		moveForward($robot["yAxis"], $terrain["width"]);
 	}
-
-	function robotStep($position)
+	if($position == "S")
 	{
-		if($position == "N")
-		{
-			moveForward($robot["xAxis"], $terrain["height"]);
-		}
-		if($position == "E")
-		{
-			moveForward($robot["yAxis"], $terrain["width"]);
-		}
-		if($position == "S")
-		{
-			moveBackward($robot["yAxis"]);
-		}
-		if($position == "W")
-		{
-			moveBackward($robot["xAxis"]);
-		}
+		moveBackward($robot["yAxis"]);
 	}
-
-	function robotControls($input)
+	if($position == "W")
 	{
-		switch($input){
-			case "M":
-				robotStep($robot["direction"]);
-			break;
-			case "L":
-				if( $robot["direction"] == "W"){
-					reset($directions);
-				}else{
-					$robot["direction"] = next($directions);
-				}
-			break;
-			case "R":
-				if( $robot["direction"] == "N"){
-					$robot["direction"] = end($directions);
-				}else{
-					$robot["direction"] = prev($directions);
-				}
-			break;
-			default:
-				return false;
-			break;
-		}
+		moveBackward($robot["xAxis"]);
+	}
+}
+
+function robotControls($input)
+{
+	switch($input){
+		case "M":
+			robotStep($robot["direction"]);
+		break;
+		case "L":
+			if( $robot["direction"] == "W"){
+				reset($directions);
+			}else{
+				$robot["direction"] = next($directions);
+			}
+		break;
+		case "R":
+			if( $robot["direction"] == "N"){
+				$robot["direction"] = end($directions);
+			}else{
+				$robot["direction"] = prev($directions);
+			}
+		break;
+		default:
+			return false;
+		break;
 	}
 }
 

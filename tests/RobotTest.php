@@ -10,7 +10,7 @@ final class RobotTest extends TestCase
                 "X Axis: 0 \n".
 				"Y Axis: 0 \n".
 				"Direction: N \n",
-                Robot::getRobotPosition()
+                getRobotPosition()
             );
        }
 }
