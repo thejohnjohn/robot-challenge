@@ -6,12 +6,21 @@ final class RobotTest extends TestCase
 {
        public function testActualPosition()
        {
-            $this->assertEquals(
-                "X Axis: 0 \n".
-				"Y Axis: 0 \n".
-				"Direction: N \n",
-                getRobotPosition()
-            );
+            $this->assertEquals("(0,0,N)", getRobotPosition());
+       }
+
+       public function testClockwiseMovement()
+       {
+	        robotControls("R");
+
+	        $this->assertEquals("(0,0,E)", getRobotPosition());
+       }
+
+       public function testAntiClockwiseMovement()
+       {
+            robotControls("L");
+
+            $this->assertEquals("(0,0,N)", getRobotPosition());
        }
 }
 

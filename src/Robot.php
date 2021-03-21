@@ -2,84 +2,102 @@
 
 $directions = ["N", "E", "S", "W"];
 
-$robot =  array(
+$dir_index = 0;
+
+$robot = array(
 	"xAxis" => 0,
 	"yAxis" => 0,
 	"direction" => "N"
 );
 
-	$terrain = array(
+$terrain = array(
 	"width" => 5,
 	"height" => 5
 );
 
-	function getRobotPosition()
+function getRobotPosition()
 {
 	global $robot;
 
-	return sprintf("X Axis: %d \n".
-					"Y Axis: %d \n".
-					"Direction: %s \n", 
-					$robot["xAxis"], $robot["yAxis"], 
-					$robot["direction"]);
+	return sprintf("(%d,%d,%s)", 
+			$robot["xAxis"], $robot["yAxis"], 
+			$robot["direction"]);
+}
+
+function exitControl()
+{
+	return false;
 }
 
 function moveForward($anyAxis, $terrainSize)
 {
 	if($anyAxis < ($terrainSize - 1)){
-		$anyAxis++;
+		return $anyAxis+=1;
 	}
 }
 
 function moveBackward($anyAxis)
 {
 	if($anyAxis > 0){
-		$anyAxis--;
+		$anyAxis-=1;
 	}
 }
 
 function robotStep($position)
 {
+	global $robot;
+	global $terrain;
+	
 	if($position == "N")
 	{
-		moveForward($robot["xAxis"], $terrain["height"]);
+		$robot["xAxis"] = moveForward($robot["xAxis"], $terrain["height"]);
 	}
 	if($position == "E")
 	{
-		moveForward($robot["yAxis"], $terrain["width"]);
+		$robot["yAxis"] = moveForward($robot["yAxis"], $terrain["width"]);
 	}
 	if($position == "S")
 	{
-		moveBackward($robot["yAxis"]);
+		$robot["yAxis"] = moveBackward($robot["yAxis"]);
 	}
 	if($position == "W")
 	{
-		moveBackward($robot["xAxis"]);
+		$robot["xAxis"] = moveBackward($robot["xAxis"]);
 	}
 }
 
 function robotControls($input)
 {
+	global $robot;
+	global $directions;
+	global $dir_index;
+
 	switch($input){
 		case "M":
 			robotStep($robot["direction"]);
 		break;
 		case "L":
-			if( $robot["direction"] == "W"){
-				reset($directions);
+			$dir_index-=1;
+			
+			if($dir_index < 0){
+				$dir_index = 3;
+				$robot["direction"] = $directions[$dir_index];
 			}else{
-				$robot["direction"] = next($directions);
+				$robot["direction"] = $directions[$dir_index];
 			}
 		break;
 		case "R":
-			if( $robot["direction"] == "N"){
-				$robot["direction"] = end($directions);
+			$dir_index+=1;
+			
+			if($dir_index > 3){
+				$dir_index = 0;
+				$robot["direction"] = $directions[$dir_index];
 			}else{
-				$robot["direction"] = prev($directions);
+				$robot["direction"] = $directions[$dir_index];
 			}
 		break;
 		default:
-			return false;
+			exitControl();
 		break;
 	}
 }

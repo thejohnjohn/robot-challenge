@@ -1,0 +1,9 @@
+{
+    "name": "thejohnjohn/robot-challenge",
+    "description": "A simple challenge",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "steampixel/simple-php-router": "^0.6.0"
+    }
+}
