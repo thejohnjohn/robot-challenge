@@ -24,11 +24,6 @@ function getRobotPosition()
 			$robot["direction"]);
 }
 
-function exitControl()
-{
-	return false;
-}
-
 function moveForward($anyAxis, $terrainSize)
 {
 	if($anyAxis < ($terrainSize - 1)){
@@ -97,7 +92,7 @@ function robotControls($input)
 			}
 		break;
 		default:
-			exitControl();
+			return false;// quitting the robot's control
 		break;
 	}
 }
